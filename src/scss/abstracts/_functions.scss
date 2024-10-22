@@ -1,0 +1,16 @@
+@use "sass:math";
+
+//단위를 제거하는 함수
+// value값을 (value값*0+1)=>(단위만 남도록)로 나눔
+@function removeUnit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// rem단위로 바꾸는 함수
+@function rem($value, $base: 16) {
+  @return math.div(removeUnit($value), $base) * 1rem;
+}
+
+@function em($value, $base) {
+  @return math.div(removeUnit($value), removeUnit($base)) * 1em;
+}
