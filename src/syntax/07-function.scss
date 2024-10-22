@@ -1,0 +1,91 @@
+@use "sass:meta";
+@use "sass:math";
+
+$theme: (
+  light: (
+    forground: #121916,
+    background: #e7e6e7,
+  ),
+  dark: (
+    background: #121916,
+    forground: #e7e6e7,
+  ),
+);
+
+@function getUnit($value) {
+  @return math.unit($value);
+}
+
+$nothing: null;
+$num: 101;
+$unit: 180px;
+$pretendard: Pretendard;
+$spoqa: "Spoqa Han Sans Neo";
+$hex: #f94e07;
+$keyword: purple;
+$color-function: hsl(18, 95%, 50%);
+$yes: true;
+$no: false;
+$units: 20px 10px 0;
+$font-families: Pretendard, Helvetica, sans-serif;
+$square-bracket: [Verdana sans-serif];
+
+@debug calc(400px + 10%); // calc(400px + 10%)
+@debug calc(400px / 2); // 200px
+@debug min(100px, calc(1rem + 10%)); // min(100px, 1rem + 10%)
+@debug meta.type-of($nothing); //Debug=null
+@debug meta.type-of($num); //Debug=number
+@debug meta.type-of($unit); //Debug=number
+@debug meta.type-of($pretendard); // Debug: string
+@debug meta.type-of($spoqa); // Debug: string
+@debug meta.type-of($hex); // Debug: color
+@debug meta.type-of($keyword); // Debug: color
+@debug meta.type-of($color-function); // Debug: color
+@debug meta.type-of($yes); // Debug: bool
+@debug meta.type-of($no); // Debug: bool
+@debug meta.type-of($units); // Debug: list
+@debug meta.type-of($font-families); // Debug: list
+@debug meta.type-of($square-bracket); // Debug: list
+@debug meta.type-of($theme); // Debug: map
+@debug getUnit(10); // ''
+@debug getUnit(20px); // 'px'
+@debug getUnit(30%); // '%'
+
+$value-1: 10px;
+$value-2: 5;
+
+.container {
+  animation-delay: 9s + 21s;
+  // width: $value-1 + $value-2;
+  // block-size: calc($value-1 - $value-2);
+  // inline-size: $value-1 * $value-2;
+  width: math.div($value-1, $value-2);
+}
+
+@debug $value-1 * $value-2;
+@debug "Helvetica" + " " + "Neue"; // 'Helvetica Neue'
+
+$word1: "Helvetica";
+$word2: "Neue";
+$word3: sans;
+$word4: serif;
+
+//단위를 제거하는 함수
+// value값을 (value값*0+1)=>(단위만 남도록)로 나눔
+@function removeUnit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// rem단위로 바꾸는 함수
+@function rem($value, $base: 16) {
+  @return math.div(removeUnit($value), $base) * 1rem;
+}
+
+@function em($value, $base) {
+  @return math.div(removeUnit($value), removeUnit($base)) * 1em;
+}
+
+.box {
+  font-family: "#{$word1 $word2}", #{$word3 - $word4};
+  font-size: em(24px, 14px);
+}
